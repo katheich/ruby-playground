@@ -50,6 +50,21 @@ def calcScore(hand)
   return hand.inject(0) { |sum, n| sum + n.points }
 end
 
+# show game state
+def showGame(player, dealer) 
+  puts '-----------'
+
+  puts "Player: #{calcScore(player)} points"
+  player.each { |card| card.to_s }
+
+  puts '-----------'
+
+  puts "Dealer: #{calcScore(dealer)} points"
+  dealer.each { |card| card.to_s }
+
+  puts '-----------'
+end
+
 
 # opening hand
 player = []
@@ -58,16 +73,32 @@ dealer = []
 player.push(*deck.slice!(0, 2))
 dealer.push(*deck.slice!(0, 2))
 
-# puts 'Deck'
-# deck.each { |card| card.to_s }
-puts "Player: #{calcScore(player)}"
-player.each { |card| card.to_s }
-
-puts "Dealer: #{calcScore(dealer)}"
-dealer.each { |card| card.to_s }
-
+showGame(player, dealer)
 
 # prompt user to hit or stand
+def userInput(deck, player, dealer) 
+  puts "Hit or stand?"
+  input = gets.chomp()
+
+  if input == 'h'
+    player.push(*deck.shift)
+    showGame(player, dealer)
+  elsif input == 's'
+    dealerPlay()
+  else
+    puts 'Please enter a valid instruction'
+    userInput(deck, player, dealer)
+  end
+end
+
+
+until calcScore(player) >= 21 do
+  userInput(deck, player, dealer)
+end
+
 
 
 # if user not lost, dealer plays until >= 17
+def dealerPlay()
+  pass
+end
