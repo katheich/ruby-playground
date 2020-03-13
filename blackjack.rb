@@ -22,7 +22,7 @@ class Card
   end
 
   def to_s
-    puts "#{suit}, #{value} (#{points} points)"
+    puts "#{suit}, #{value} (#{points})"
   end
 
 end
@@ -47,22 +47,21 @@ deck.shuffle!
 
 # calculate score of a hand
 def calcScore(hand)
-  score = hand.inject(0) { |sum, n| sum + n.points }
-  return score
+  return hand.inject(0) { |sum, n| sum + n.points }
 end
 
 
 # opening hand
-sam = []
+player = []
 dealer = []
 
-sam.push(*deck.slice!(0, 2))
+player.push(*deck.slice!(0, 2))
 dealer.push(*deck.slice!(0, 2))
 
 # puts 'Deck'
 # deck.each { |card| card.to_s }
-puts "Sam: #{calcScore(sam)}"
-sam.each { |card| card.to_s }
+puts "Player: #{calcScore(player)}"
+player.each { |card| card.to_s }
 
 puts "Dealer: #{calcScore(dealer)}"
 dealer.each { |card| card.to_s }
