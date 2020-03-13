@@ -69,7 +69,6 @@ end
 # opening hand
 player = []
 dealer = []
-stand = false
 
 player.push(*deck.slice!(0, 2))
 dealer.push(*deck.slice!(0, 2))
