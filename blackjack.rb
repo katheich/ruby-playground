@@ -69,36 +69,63 @@ end
 # opening hand
 player = []
 dealer = []
+stand = false
 
 player.push(*deck.slice!(0, 2))
 dealer.push(*deck.slice!(0, 2))
 
 showGame(player, dealer)
 
-# prompt user to hit or stand
-def userInput(deck, player, dealer) 
-  puts "Hit or stand?"
+
+# function for prompting user
+def userInput(deck, player, dealer, stop) 
+  puts "Hit (h) or stand (s)?"
   input = gets.chomp()
 
   if input == 'h'
     player.push(*deck.shift)
     showGame(player, dealer)
   elsif input == 's'
-    dealerPlay()
+    dealerPlay(deck, player, dealer)
+    stop = true
   else
     puts 'Please enter a valid instruction'
-    userInput(deck, player, dealer)
+    userInput(deck, player, dealer, stop)
+  end
+
+  return stop
+end
+
+
+# if user not lost, dealer plays until >= 17
+def dealerPlay(deck, player, dealer)
+  until calcScore(dealer) >= 17 do
+    dealer.push(*deck.shift)
+    showGame(player, dealer)
+  end 
+
+  if calcScore(dealer) > 21 
+    puts 'You won!'
+  elsif 21 - calcScore(dealer) < 21 - calcScore(player)
+    puts 'You lost!'
+  else
+    puts 'It\'s a draw!'
   end
 end
 
 
+
+
+# game play
 until calcScore(player) >= 21 do
-  userInput(deck, player, dealer)
+  stop = false
+  loop do
+    stop = userInput(deck, player, dealer, stop)
+    break if stop || calcScore(player) >= 21
+  end
+  break
 end
 
-
-
-# if user not lost, dealer plays until >= 17
-def dealerPlay()
-  pass
-end
+# if code gets here and player has more than 21 points, they lost
+puts 'You lost!' if calcScore(player) > 21
+puts 'You won!' if calcScore(player) == 21
