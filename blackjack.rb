@@ -116,12 +116,19 @@ end
 
 
 # game play
-loop do
-  stop = userInput(deck, player, dealer, stop)
-  break if stop || calcScore(player) >= 21
+unless calcScore(player) == 21 || calcScore(dealer) == 21
+  loop do
+    stop = userInput(deck, player, dealer, stop)
+    break if stop || calcScore(player) >= 21
+  end
 end
+
   
 
 # if code gets here and player has more than 21 points, they lost
 puts 'You lost!' if calcScore(player) > 21
-puts 'You won!' if calcScore(player) == 21
+if calcScore(player) == 21
+  puts 'You won!'
+elsif calcScore(dealer) == 21
+  puts 'You lost!'
+end
